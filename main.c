@@ -48,8 +48,9 @@ void inserir ( int info )
         
    while ( atual )
    {
-      if ( atual->info < info )
+      if ( atual->info < info ) {
          atual = atual->proximo;
+      }
       else
       {
          // elemento intermediário - caso 2
@@ -93,22 +94,45 @@ void imprimeLista ( void )
    return ;
 }
 
+//Procura um elemento na lista
+struct no *procurar ( int info )
+{
+   struct no *atual = inicio;
+        
+   while ( atual )
+   {
+      if ( atual->info == info) {
+         return atual;
+      }
+      else {
+         atual = atual->proximo;
+      }
+   }
+   return printf("Valor nao encontrado");
+}
+
+
+
 int main ( void )
 {
    register int i;
    inicio = fim = NULL;
 
    //Inseri 10 elementos na lista
-   for ( i = 1; i <= 10; i++ )
-      inserir (i); 
-   
+   for ( i = 1; i <= 10; i++ ) {
+      inserir (i);
+   }
    imprimeLista(); puts ("");
-        
+
    //Inseri elementos na lista     
    inserir (0);
    inserir (12);
    inserir (11); 
         
-   imprimeLista (); puts ("");        
+   imprimeLista (); puts ("");
+
+   // teste da função de procura
+   printf ("Procurar( 3 ): %.2d\n\n", procurar(3)->info );
+
    return 0;
 }

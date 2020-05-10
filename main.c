@@ -1,11 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
+#include <string.h>
 
-int main () {
-    setlocale(LC_ALL, "Portuguese");
+struct LDE {
+	int		info;
 
-    printf("EXERCICIO - LISTA ENCADEADA");
+	struct LDE 	*proximo;
+	struct LDE	*anterior;
+};
 
-    return 0;   
+// declaração dos ponteiros de controle
+struct no *inicio;
+struct no *fim;
+
+int main (void)
+{
+	printf ("%d\n", sizeof(struct LDE));
+	return 0;
 }

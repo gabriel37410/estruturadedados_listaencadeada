@@ -2,19 +2,113 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct LDE {
-	int		info;
+#define MALLOC(a) (a *) malloc ( sizeof(a) )
 
-	struct LDE 	*proximo;
-	struct LDE	*anterior;
+struct no
+{
+   int info;
+        
+   struct no *proximo;
+   struct no *anterior;
 };
 
-// declaração dos ponteiros de controle
+// ponteiros de referência
 struct no *inicio;
 struct no *fim;
 
-int main (void)
+//Insere um novo dado na lista
+void inserir ( int info )
 {
-	printf ("%d\n", sizeof(struct LDE));
-	return 0;
+   struct no *novo = MALLOC ( struct no );
+   struct no *atual;
+        
+   if ( !novo )
+   {
+      perror ( "Malloc: " );
+      return ;
+   }
+        
+   // atribuição do novo valor...
+   novo->info = info;
+        
+   // cria lista
+   if ( !inicio )
+   {
+      novo->proximo = NULL;
+      novo->anterior  = NULL;
+                
+      inicio = novo;
+      fim = novo;
+                
+      return ;
+   }
+        
+   // se não for o primeiro elemento da lista...
+   atual = inicio;
+        
+   while ( atual )
+   {
+      if ( atual->info < info )
+         atual = atual->proximo;
+      else
+      {
+         // elemento intermediário - caso 2
+         if ( atual->anterior )
+         {
+            novo->proximo = atual;
+            novo->anterior = atual->anterior;
+            atual->anterior->proximo = novo;
+            atual->anterior = novo;
+                                
+            return ;
+         }
+         // novo primeiro elemento - caso 1
+         novo->proximo = atual;
+         novo->anterior = NULL;
+         atual->anterior = novo;
+         inicio = novo;
+                        
+         return ;
+      }
+   }
+   // novo último elemento - caso 3
+   fim->proximo = novo;
+   novo->proximo = NULL;
+   novo->anterior = fim;
+   fim = novo;
+  
+   return ;
+}
+
+//Imprimi os dados da lista
+void imprimeLista ( void )
+{
+   struct no *atual = inicio;
+        
+   while ( atual )
+   {
+      printf ( "Info:  %.2d\n", atual->info );
+      atual = atual->proximo;
+   }
+   return ;
+}
+
+int main ( void )
+{
+   register int i;
+   inicio = fim = NULL;
+
+   //Inseri 10 elementos na lista
+   for ( i = 1; i <= 10; i++ )
+      inserir (i); 
+   
+   imprimeLista(); puts ("");
+        
+   //Inseri elementos na lista     
+   inserir (0);
+   inserir (12);
+   inserir (11); 
+        
+   imprimeLista (); puts ("");        
+   return 0;
 }

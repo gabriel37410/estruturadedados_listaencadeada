@@ -111,6 +111,43 @@ struct no *procurar ( int info )
    return printf("Valor nao encontrado");
 }
 
+//Remove um nó da lista
+void remover ( struct no *dado )
+{  
+   if ( !dado ) return ;
+        
+   // item intermediário
+   if ( dado->proximo && dado->anterior )
+   {
+      dado->anterior->proximo = dado->proximo;
+      dado->proximo->anterior = dado->anterior;
+                
+      free ( dado );
+      return ;
+   }
+        
+   // primeiro item
+   if ( dado == inicio )
+   {
+      inicio = dado->proximo;
+      inicio->anterior = NULL;
+                
+      free ( dado );
+      return ;
+   }
+        
+   // último elemento
+   if ( dado == fim )
+   {
+      fim = dado->anterior;
+      fim->proximo = NULL;
+                
+      free ( dado );
+      return ;
+   }
+}
+
+
 
 
 int main ( void )
@@ -133,6 +170,13 @@ int main ( void )
 
    // teste da função de procura
    printf ("Procurar( 3 ): %.2d\n\n", procurar(3)->info );
+
+   //Remove os elementos da lista
+   remover ( procurar ( 0) ); 
+   remover ( procurar ( 5) ); 
+   remover ( procurar (12) );
+        
+   imprimeLista(); puts ("");
 
    return 0;
 }
